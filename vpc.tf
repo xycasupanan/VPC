@@ -1,144 +1,145 @@
 #VPC 
-resource "aws_vpc" "XY_VPC" {
+resource "aws_vpc" "XY-VPC" {
     cidr_block = "192.168.0.0/24"
     instance_tenancy = "default"
     enable_dns_support = "true"
     enable_classiclink = "false"
     tags {
-        Name = "XY_VPC"
+        Name = "XY-VPC"
     }
 
 }
 
 #subnets 
 
-resource "aws_subnet" "XY_public-1" {
-    vpc_id = "${aws_vpc.XY_VPC}"
+resource "aws_subnet" "XY-public-a" {
+    vpc_id = "${aws_vpc.XY-VPC.id}"
     cidr_block = "192.168.0.0/28"
     map_public_ip_on_launch = "true"
     availability_zone = "ap-southeast-1a"
     tags = {
-        Name = "XY_public-1"
+        Name = "XY-public-a "
     }
   
 }
 
-resource "aws_subnet" "XY_public-2" {
-    vpc_id = "${aws_vpc.XY_VPC}"
+resource "aws_subnet" "XY-public-b" {
+    vpc_id = "${aws_vpc.XY-VPC.id}"
     cidr_block = "192.168.0.0/28"
     map_public_ip_on_launch = "true"
     availability_zone = "ap-southeast-1a"
     tags = {
-        Name = "XY_public-2"
+        Name = "XY-public-b"
     }
   
 }
 
-resource "aws_subnet" "XY_private-1" {
-    vpc_id = "${aws_vpc.XY_VPC}"
+resource "aws_subnet" "XY-private-a" {
+    vpc_id = "${aws_vpc.XY-VPC.id}"
     cidr_block = "192.168.0.0/28"
     map_public_ip_on_launch = "true"
     availability_zone = "ap-southeast-1a"
     tags = {
-        Name = "XY_private-1"
+        Name = "XY-private-a"
     }
   
 }
 
-resource "aws_subnet" "XY_private-2" {
-    vpc_id = "${aws_vpc.XY_VPC}"
+resource "aws_subnet" "XY-private-b" {
+    vpc_id = "${aws_vpc.XY-VPC.id}"
     cidr_block = "192.168.0.0/28"
     map_public_ip_on_launch = "true"
     availability_zone = "ap-southeast-1a"
     tags = {
-        Name = "XY_private-2"
+        Name = "XY-private-b"
     }
   
 }
 
-resource "aws_internet_gateway" "XY_gw" {
-    vpc_id = "${aws_vpc.XY_VPC}"
+resource "aws_internet_gateway" "XY-GW" {
+    vpc_id = "${aws_vpc.XY-VPC.id}"
     tags = {
-        Name = "XY_gw"
+        Name = "XY-GW"
     }
   
 }
 
 #route tables
-resource "aws_route_table" "XY_public_route" {
-    vpc_id = "${aws_vpc.XY_VPC}"
+resource "aws_route_table" "XY-public-route" {
+    vpc_id = "${aws_vpc.XY-VPC.id}"
     route = {
         cidr_block = "0.0.0.0/0"
-        gateway_id = "${aws_internet_gateway.XY_gw.id}"
+        gateway_id = "${aws_internet_gateway.XY-GW.id}"
     }
     tags = { 
-        Name = "XY_public_route"
+        Name = "XY-public-route"
     }
 }
 
 #route associations public
-resource "aws_route_table_association" "XY_route_table-a" {
-    subnet_id = "${aws_subnet.XY_public-1.id}"
-    route_table_id = "${aws_route_table.XY_public_route.id}" 
+resource "aws_route_table_association" "XY-route-table-a" {
+    subnet_id = "${aws_subnet.XY-public-a.id}"
+    route_table_id = "${aws_route_table.XY-public-route.id}" 
 }
 
-resource "aws_route_table_association" "XY_route_table-b" {
-    subnet_id = "${aws_subnet.XY_public-2.id}"
-    route_table_id = "${aws_route_table.XY_public_route.id}"
+resource "aws_route_table_association" "XY-route-table-b" {
+    subnet_id = "${aws_subnet.XY-public-b.id}"
+    route_table_id = "${aws_route_table.XY-public-route.id}"
 }
 
 #Nat GW
-resource "aws_eip" "Nat-A" {
+resource "aws_eip" "Nat-a" {
     vpc = "true"
   
 }
 
-resource "aws_eip" "Nat-B" {
+resource "aws_eip" "Nat-b" {
     vpc = "true"
   
 }
 
-resource "aws_nat_gateway" "XY_nat_gateway-A" {
-    allocation_id = "${aws_eip.Nat-A.id}"
-    subnet_id = "${aws_subnet.XY_public-1.id}"
-    depends_on = ["aws_internet_gateway.XY_gw.id"] 
+resource "aws_nat_gateway" "XY-nat-gateway-a" {
+    allocation_id = "${aws_eip.Nat-a.id}"
+    subnet_id = "${aws_subnet.XY-public-a.id}"
+    depends_on = ["aws_internet_gateway.XY-GW.id"] 
 
 }
 
-resource "aws_nat_gateway" "XY_nat_gateway-B" {
-    allocation_id = "${aws.eip.Nat-B.id}"
-    subnet_id = "${aws_subnet.XYpublic-2.id}"
-    depends_on = [ "aws_internet.gateway.XY_gw.id" ]
+resource "aws_nat_gateway" "XY-nat-gateway-b" {
+    allocation_id = "${aws.eip.Nat-b.id}"
+    subnet_id = "${aws_subnet.XY-public-b.id}"
+    depends_on = [ "aws_internet.gateway.XY-GW.id" ]
     
 }
 
 #VPC setup for NAT
-resource "aws_route_table" "XY_nat_route-A" {
-    vpc_id = "${aws_vpc.XY_VPC.id}"
+resource "aws_route_table" "XY-nat-route-a" {
+    vpc_id = "${aws_vpc.XY-VPC.id}"
     route = {
         cidr_block = "0.0.0.0/0"
-        aws_nat_gateway_id = "${aws_nat_gateway.XY_nat_gateway-A}"
+        aws_nat_gateway_id = "${aws_nat_gateway.XY-nat-gateway-a.id}"
 
     }
-    tags = "XY_nat_gateway-A"
+    tags = "XY-nat-gateway-a"
 }
 
-resource "aws_route_table" "XY_nat_route-B" {
-    vpc_id = "${aws_vpc.XY_VPC.id}"
+resource "aws_route_table" "XY-nat-route-b" {
+    vpc_id = "${aws_vpc.XY-VPC.id}"
     route = {
         cidr_block = "0.0.0.0/0"
-        aws_nat_gateway_id = "${aws_nat_gateway.XY_nat_gateway-B}"
+        aws_nat_gateway_id = "${aws_nat_gateway.XY-nat-gateway-b}"
     }
-    tags = "XY_nat_gateway-B"
+    tags = "XY-nat-gateway-b"
 }
 
-resource "aws_route_table_association" "XY_route_association-A" {
-    subnet_id = "${aws_subnet.XY_private-1.id}"
-    route_table_id = "${aws_route_table.XY_public_route.id}"
+resource "aws_route_table_association" "XY-route-association-a" {
+    subnet_id = "${aws_subnet.XY_private-a.id}"
+    route_table_id = "${aws_route_table.XY-public-route.id}"
   
 }
 
-resource "aws_route_table_association" "XY_route_association-B" {
-    subnet_id = "${aws_subnet.XY_private-2.id}"
-    route_table_id = "${aws_route.table.XY_public_route.id}"
+resource "aws_route_table_association" "XY-route-association-b" {
+    subnet_id = "${aws_subnet.XY-private-a.id}"
+    route_table_id = "${aws_route.table.XY-public-route.id}"
 }
+
