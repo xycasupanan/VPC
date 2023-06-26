@@ -87,26 +87,3 @@ data "local_file" "route-data" {
     }
 }
 
-
-
-
-output "vpc_id" {
-    value = aws_vpc.XY-VPC
-    description = "VPC id"     
-}
-
-
-output "subnet_id" "XY-public-a"{
-    value = ws_subnet.XY-public-a.id
-    description = "Subnet id"     
-}
-
-output "subnet_id" "XY-public-b"{
-    value = ws_subnet.XY-public-b.id
-    description = "Subnet id"     
-}
-
-output "route_table_id" {
-    value = ws_subnet.XY-public-b.id
-    description = "Subnet id"     
-}
