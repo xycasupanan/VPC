@@ -6,7 +6,7 @@ resource "aws_vpc" "XY-VPC" {
     enable_classiclink = "false"
     tags = {
         Name = "ProjectX"
-        Description = "For Project VPC"
+        Description = "For ProjectX VPC"
     }
 
 }
@@ -91,5 +91,25 @@ resource "aws_route_table_association" "XY-route-table-b" {
 
 output "vpc_id" {
     value = aws_vpc.XY-VPC
-    description = "VPC id."
+    description = "VPC id"
 }
+
+output "internet_gateway" {
+     value = aws_internet_gateway.XY-GW
+     description = "Internet GW id"
+}
+
+output "subnet_id" {
+     value = [aws_subnet.XY-public-a.id,aws_subnet.XY-public-b.id,aws_subnet.XY-private-a.id,aws_subnet.XY-private-b.id] 
+     description = "Subnet"
+  
+}
+
+output "route_table_id" {
+     value = aws_route_table.XY-public-route
+     description = "Public Route Table"
+}
+
+
+
+
