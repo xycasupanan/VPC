@@ -31,7 +31,7 @@ resource "aws_nat_gateway" "XY-nat-gateway-b" {
     allocation_id = aws_eip.Nat-b.id
     subnet_id = data.terraform_remote_state.xdata.outputs.subnet_id
     depends_on = [
-        data.terraform_remote_state.xdata.outputs_internet_gateway_id
+        data.terraform_remote_state.xdata.outputs.nternet_gateway_id
     ]
 
 }
