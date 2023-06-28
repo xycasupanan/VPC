@@ -94,7 +94,7 @@ output "vpc_id" {
     description = "VPC id"
 }
 
-output "internet_gateway" {
+output "internet_gateway_id" {
      value = aws_internet_gateway.XY-GW
      description = "Internet GW id"
 }
