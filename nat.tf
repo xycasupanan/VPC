@@ -1,7 +1,7 @@
 
 #data
 
-data "terraform_remote_state" "vpc-data" {
+data "terraform_remote_state" "xdata" {
     backend = "local"
 
     config = {
@@ -20,25 +20,25 @@ resource "aws_eip" "Nat-b" {
 
 resource "aws_nat_gateway" "XY-nat-gateway-a" {
     allocation_id = aws_eip.Nat-a.id
-    subnet_id = data.terraform_remote_state.vpc-data.outputs.subnet_id
+    subnet_id = data.terraform_remote_state.xdata.outputs.subnet_id
     depends_on = [
-        data.terraform_remote_state.vpc-data.outputs.internet_gateway_id
+        data.terraform_remote_state.xdata.outputs.internet_gateway_id
     ]
 
 }
 
 resource "aws_nat_gateway" "XY-nat-gateway-b" {
     allocation_id = aws_eip.Nat-b.id
-    subnet_id = data.terraform_remote_state.vpc-data.outputs.subnet_id
+    subnet_id = data.terraform_remote_state.xdata.outputs.subnet_id
     depends_on = [
-        data.terraform_remote_state.vpc-data.outputs_id
+        data.terraform_remote_state.xdata.outputs_id
     ]
 
 }
 
 #VPC setup for NAT
 resource "aws_route_table" "XY-nat-route-a" {
-    vpc_id = data.terraform_remote_state.vpc-data.outputs.vpc_id
+    vpc_id = data.terraform_remote_state.xdata.outputs.vpc_id
     route  {
         cidr_block = "0.0.0.0/0"
         aws_nat_gateway_id = aws_nat_gateway.XY-nat-gateway-a.id
@@ -49,7 +49,7 @@ resource "aws_route_table" "XY-nat-route-a" {
 }
 
 resource "aws_route_table" "XY-nat-route-b" {
-    vpc_id = data.terraform_remote_state.vpc-data.outputs.vpc_id
+    vpc_id = data.terraform_remote_state.xdata.outputs.vpc_id
     route  {
         cidr_block = "0.0.0.0/0"
         aws_nat_gateway_id = aws_nat_gateway.XY-nat-gateway-b.id
@@ -60,11 +60,11 @@ resource "aws_route_table" "XY-nat-route-b" {
 }
 
 resource "aws_route_table_association" "XY-route-association-a" {
-    subnet_id = data.terraform_remote_state.vpc-data.outputs.subnet_id
-    route_table_id = data.terraform_remote_state.vpc-data.outputs.route_table_id
+    subnet_id = data.terraform_remote_state.xdata.outputs.subnet_id
+    route_table_id = data.terraform_remote_state.xdata.outputs.route_table_id
 }
 
 resource "aws_route_table_association" "XY-route-association-b" {
-    subnet_id = data.terraform_remote_state.vpc-data.outputs.subnet_id
-    route_table_id = data.terraform_remote_state.vpc-data.outputs.route_table_id
+    subnet_id = data.terraform_remote_state.xdata.outputs.subnet_id
+    route_table_id = data.terraform_remote_state.xdata.outputs.route_table_id
 }
