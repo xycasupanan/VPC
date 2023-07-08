@@ -1,12 +1,23 @@
 
+#data
+
+data "terraform_remote_state" "xdata" {
+    backend = "local"
+
+    config = {
+        path = "../network/terraform.tfstate"
+   }
+}
+
+
 #Instance creation 
 
 resource "aws_instance" "ServerX" {
-    ami           = "ami-0f74c08b8b5effa56"
-    instance_type = "t2.micro"
+    ami           = var.AMI
+    instance_type = var.INSTANCE_TYPE
 
 #VPC Subnet     
-    subnet_id     = aws_subnet.XY-private-a.id
+    subnet_id     = data.terraform_remote_state.xdata.outputs.vpc_id
 
 
 }

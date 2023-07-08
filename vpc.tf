@@ -99,10 +99,24 @@ output "internet_gateway_id" {
      description = "Internet GW id"
 }
 
-output "subnet_id" {
-     value = [aws_subnet.XY-public-a.id,aws_subnet.XY-public-b.id,aws_subnet.XY-private-a.id,aws_subnet.XY-private-b.id] 
-     description = "Subnet"
-  
+output "subnet_id_public_a" {
+     value = aws_subnet.XY-public-a.id
+     description = "Public-Subnet-a"
+}
+
+output "subnet_id_public_b" {
+     value = aws_subnet.XY-public-b.id 
+     description = "Public-Subnet-b"
+}
+
+output "subnet_id_private_a" {
+     value = aws_subnet.XY-private-a.id 
+     description = "Private-Subnet-a"   
+}
+
+output "subnet_id_private_b" {
+     value = aws_subnet.XY-private-b.id
+     description = "Private-Subnet-b"
 }
 
 output "route_table_id" {
