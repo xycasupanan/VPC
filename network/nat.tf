@@ -3,9 +3,15 @@
 
 data "terraform_remote_state" "xdata" {
     backend = "local"
+    config = {
+        path = "./vpc/terraform.tfstate"
+    }
+}
 
-   config = {
-        path = "../netwotk/terraform.tfstate"
+data "terraform_remote_state" "ec2" {
+    backend = "local"
+    config = {
+        path = "./resources/terraform.tfstate"
     }
 }
 
@@ -20,15 +26,17 @@ resource "aws_eip" "Nat-b" {
 
 resource "aws_nat_gateway" "XY-nat-gateway-a" {
     allocation_id = aws_eip.Nat-a.id
-    subnet_id = data.terraform_remote_state.xdata.outputs.subnet_id_private_a
-#    depends_on = data.terraform_remote_state.xdata.outputs.internet_gateway_id
+    subnet_id = terraform_remote_state.ec2.OUTPUT_NAME
+#    depends_on = [
+#        data.terraform_remote_state.xdata.outputs.internet_gateway_id
+#    ]
 
 }
 
 resource "aws_nat_gateway" "XY-nat-gateway-b" {
     allocation_id = aws_eip.Nat-b.id
-    subnet_id  = data.terraform_remote_state.xdata.outputs.subnet_id_private_b
-#    depends_on = data.terraform_remote_state.xdata.outputs.nternet_gateway_id
+    subnet_id = aws_subnet.XY-private-b.id
+    depends_on = aws_nat_gateway.XY-nat-gateway-a
 
 }
 
