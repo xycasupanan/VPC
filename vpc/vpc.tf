@@ -26,7 +26,7 @@ resource "aws_subnet" "XY-public-a" {
 
 resource "aws_subnet" "XY-public-b" {
     vpc_id = aws_vpc.XY-VPC.id
-    cidr_block = "192.168.0.16/28"
+    cidr_block = "INPUT_VALUE"
     map_public_ip_on_launch = "true"
     availability_zone = "ap-southeast-1a"
     tags = {
@@ -90,7 +90,7 @@ resource "aws_route_table_association" "XY-route-table-b" {
 
 
 output "vpc_id" {
-    value = aws_vpc.XY-VPC
+    value = aws_vpc.XY-VPC.id
     description = "VPC id"
 }
 
@@ -99,9 +99,15 @@ output "internet_gateway_id" {
      description = "Internet GW id"
 }
 
-output "subnet_id" {
-     value = [aws_subnet.XY-public-a.id,aws_subnet.XY-public-b.id,aws_subnet.XY-private-a.id,aws_subnet.XY-private-b.id] 
-     description = "Subnet"
+output "subnet_public_id_a" {
+     value = aws_subnet.XY-public-a.id
+     description = "Public Subnet"
+  
+}
+
+output "subnet_private_id_a" {
+     value = aws_subnet.XY-private-a.id
+     description = "Private Subnet"
   
 }
 
@@ -111,5 +117,71 @@ output "route_table_id" {
 }
 
 
+output "subnet_public_id_a" {
+     value = aws_subnet.XY-public-a.id
+     description = "Public Subnet"
+  
+}
 
+output "subnet_public_id_a" {
+     value = aws_subnet.XY-public-a.id
+     description = "Public Subnet"
+  
+}
+
+output "subnet_public_id_a" {
+     value = aws_subnet.XY-public-a.id
+     description = "Public Subnet"
+  
+}
+
+
+output "subnet_public_id_a" {
+     value = aws_subnet.XY-public-a.id
+     description = "Public Subnet"
+  
+}
+
+
+output "subnet_public_id_a" {
+     value = aws_subnet.XY-public-a.id
+     description = "Public Subnet"
+  
+}
+
+output "subnet_public_id_a" {
+     value = aws_subnet.XY-public-a.id
+     description = "Public Subnet"
+  
+}
+
+output "subnet_public_id_a" {
+     value = aws_subnet.XY-public-a.id
+     description = "Public Subnet"
+  
+}
+
+output "subnet_public_id_a" {
+     value = aws_subnet.XY-public-a.id
+     description = "Public Subnet"
+  
+}
+
+output "subnet_public_id_a" {
+     value = aws_subnet.XY-public-a.id
+     description = "Public Subnet"
+  
+}
+
+output "subnet_public_id_a" {
+     value = aws_subnet.XY-public-a.id
+     description = "Public Subnet"
+  
+}
+
+output "subnet_public_id_a" {
+     value = aws_subnet.XY-public-a.id
+     description = "Public Subnet"
+  
+}
 
