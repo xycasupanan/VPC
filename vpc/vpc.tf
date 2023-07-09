@@ -26,7 +26,7 @@ resource "aws_subnet" "XY-public-a" {
 
 resource "aws_subnet" "XY-public-b" {
     vpc_id = aws_vpc.XY-VPC.id
-    cidr_block = "192.168.0.16/28"
+    cidr_block = "INPUT_VALUE"
     map_public_ip_on_launch = "true"
     availability_zone = "ap-southeast-1a"
     tags = {
@@ -90,7 +90,7 @@ resource "aws_route_table_association" "XY-route-table-b" {
 
 
 output "vpc_id" {
-    value = aws_vpc.XY-VPC
+    value = aws_vpc.XY-VPC.id
     description = "VPC id"
 }
 
@@ -99,31 +99,19 @@ output "internet_gateway_id" {
      description = "Internet GW id"
 }
 
-output "subnet_id_public_a" {
+output "subnet_public_id_a" {
      value = aws_subnet.XY-public-a.id
-     description = "Public-Subnet-a"
+     description = "Public Subnet"
+  
 }
 
-output "subnet_id_public_b" {
-     value = aws_subnet.XY-public-b.id 
-     description = "Public-Subnet-b"
-}
-
-output "subnet_id_private_a" {
-     value = aws_subnet.XY-private-a.id 
-     description = "Private-Subnet-a"   
-}
-
-output "subnet_id_private_b" {
-     value = aws_subnet.XY-private-b.id
-     description = "Private-Subnet-b"
+output "subnet_private_id_a" {
+     value = aws_subnet.XY-private-a.id
+     description = "Private Subnet"
+  
 }
 
 output "route_table_id" {
      value = aws_route_table.XY-public-route
      description = "Public Route Table"
 }
-
-
-
-
